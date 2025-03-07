@@ -1,6 +1,9 @@
-﻿namespace Application.Users.Query.GetUserById;
+﻿using Infrastructure.Persistence;
+using MediatR;
 
-public class GetUserByIdQuery
+namespace Application.Users.Query.GetUserById;
+
+public class GetUserByIdQuery: IRequest<ApplicationUser>
 {
-    
+    public string Id { get; set; }
 }
