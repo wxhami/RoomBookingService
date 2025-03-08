@@ -6,7 +6,7 @@ namespace Application.Rooms.Query.GetRoomsWithChosenAmenities;
 
 public class GetRoomsWithChosenAmenitiesQuery:IRequest<List<Room>>, IPagedQuery
 {
-    public List<Guid> AmenitiesIds { get; set; } = [];
+    public Guid[] AmenitiesIds { get; set; } = [];
     public int? PageSize { get; set; }
     public int? PageNumber { get; set; }
 }

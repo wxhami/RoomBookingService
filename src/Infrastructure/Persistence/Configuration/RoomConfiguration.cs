@@ -7,7 +7,7 @@ public class RoomConfiguration:EntityConfigurationBase<Room>
 {
     public override void Configure(EntityTypeBuilder<Room> builder)
     {
-        builder.HasMany<Amenity>().WithMany();
+        builder.HasMany<Amenity>();
 
         base.Configure(builder);
     }

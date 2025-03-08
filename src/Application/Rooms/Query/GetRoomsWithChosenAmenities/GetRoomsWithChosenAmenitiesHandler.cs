@@ -14,7 +14,7 @@ public class GetRoomsWithChosenAmenitiesHandler(IDatabaseContext databaseContext
         var pageSize = request.PageSize ?? RequestConstants.PageSize;
         
         var rooms = await databaseContext.Rooms
-            .Where(x => x.Amenities.Any(a => request.AmenitiesIds.Contains(a.Id)))
+            .Where(x => x.Amenities.Any(a => request.AmenitiesIds.Contains(a)))
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync(cancellationToken);
