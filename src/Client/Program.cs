@@ -1,4 +1,7 @@
+using Application;
+using Client.Endpoints.Extensions;
 using Client.ExceptionHandlers;
+using Hangfire;
 using Infrastructure;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
@@ -8,10 +11,20 @@ using Microsoft.EntityFrameworkCore.Design;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddInfrastructure(builder.Configuration, builder.Host);
+builder.Configuration.AddUserSecrets<Program>(true).AddEnvironmentVariables();
+
+
+builder.Services.AddInfrastructure(builder.Configuration, builder.Host).AddApplication(builder.Configuration);
+
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddHttpLogging(options => { });
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
 
 builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme,
     options => { options.BearerTokenExpiration = TimeSpan.FromDays(365); });
@@ -27,14 +40,20 @@ builder.Services.AddIdentityCore<ApplicationUser>()
 builder.Services
     .AddExceptionHandler<ObjectNotFoundExceptionHandler>();
 
+builder.Services.AddAntiforgery();
 
 var app = builder.Build();
 
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.UseHangfire();
+
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseExceptionHandler("/Error", createScopeForErrors: true);
+    app.UseHsts();
 }
 
 app.UseHttpsRedirection();
@@ -46,14 +65,14 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
+
 app.UseAntiforgery();
 
-app.UseSwagger();
-app.UseSwaggerUI();
 
 app.UseHttpLogging();
 
-
+app.MapGroup("api/v1/identity/").MapIdentityApi<ApplicationUser>();
+app.MapEndpoints();
 
 await MigrateDatabaseAsync(app);
 
