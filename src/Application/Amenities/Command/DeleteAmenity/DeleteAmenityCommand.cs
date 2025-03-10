@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Application.Amenities.Command.DeleteAmenity;
 
-public class DeleteAmenityCommand:IRequest
+public class DeleteAmenityCommand : IRequest
 {
     public Guid Id { get; set; }
 }

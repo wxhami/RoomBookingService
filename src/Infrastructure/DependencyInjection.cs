@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Options;
-using Client.Services;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Hangfire.AspNetCore;
@@ -11,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Infrastructure.Extensions;
+using Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 
@@ -76,8 +76,9 @@ public static class DependencyInjection
         return services.UseHangfireDashboard();
     }
 
-    public static IServiceCollection AddServices(this IServiceCollection services)
+    private static IServiceCollection AddServices(this IServiceCollection services)
     {
-        return services.AddTransient<INotificationService, NotificationService>().AddTransient<ISmtpClientFabric, SmtpClientFabric>().AddTransient<IMailSender, MailSender>();
+        return services.AddTransient<INotificationService, NotificationService>()
+            .AddTransient<ISmtpClientFabric, SmtpClientFabric>().AddTransient<IMailSender, MailSender>();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Application.Users.Command.ChangeUser;
 
-public class ChangeUserCommand: IRequest
+public class ChangeUserCommand : IRequest
 {
     public string UserId { get; set; } = null!;
     public string? NewName { get; set; }

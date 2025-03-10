@@ -1,7 +1,8 @@
 ﻿using Domain.Entities;
+using Infrastructure.Persistence.Configuration.Base;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Domain.Configuration;
+namespace Infrastructure.Persistence.Configuration;
 
 public class ReservationConfiguration : EntityConfigurationBase<Reservation>
 {

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Amenities.Command.DeleteAmenity;
 
-public class DeleteAmenityHandler(IDatabaseContext databaseContext): IRequestHandler<DeleteAmenityCommand>
+public class DeleteAmenityHandler(IDatabaseContext databaseContext) : IRequestHandler<DeleteAmenityCommand>
 {
     public async Task Handle(DeleteAmenityCommand request, CancellationToken cancellationToken)
     {

@@ -2,7 +2,7 @@
 
 namespace Application.Reservations.Command.ChangeReservation;
 
-public class ChangeReservationCommand:IRequest
+public class ChangeReservationCommand : IRequest
 {
     public Guid Id { get; set; }
     public string? NewDescription { get; set; }

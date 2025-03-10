@@ -2,20 +2,20 @@
 using Domain.Entities;
 using MediatR;
 
-namespace Application.Amenities.AddAmenity;
+namespace Application.Amenities.Command.AddAmenity;
 
-public class AddAmenityHandler(IDatabaseContext databaseContext): IRequestHandler<AddAmenityCommand, Guid>
+public class AddAmenityHandler(IDatabaseContext databaseContext) : IRequestHandler<AddAmenityCommand, Guid>
 {
     public async Task<Guid> Handle(AddAmenityCommand request, CancellationToken cancellationToken)
     {
-      var amenity =  new Amenity()
-            {
-                Name = request.Name
-            };
+        var amenity = new Amenity()
+        {
+            Name = request.Name
+        };
 
-       databaseContext.Amenities.Add(amenity);
-       await databaseContext.SaveChangesAsync(cancellationToken);
+        databaseContext.Amenities.Add(amenity);
+        await databaseContext.SaveChangesAsync(cancellationToken);
 
-       return amenity.Id;
+        return amenity.Id;
     }
 }

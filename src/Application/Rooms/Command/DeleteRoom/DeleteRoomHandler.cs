@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Rooms.Command.DeleteRoom;
 
-public class DeleteRoomHandler(IDatabaseContext databaseContext): IRequestHandler<DeleteRoomCommand>
+public class DeleteRoomHandler(IDatabaseContext databaseContext) : IRequestHandler<DeleteRoomCommand>
 {
     public async Task Handle(DeleteRoomCommand request, CancellationToken cancellationToken)
     {

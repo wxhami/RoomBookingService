@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Application.Users.Command.ChangeUser;
 
-public class ChangeUserHandler(UserManager<ApplicationUser> userManager, IDatabaseContext databaseContext):IRequestHandler<ChangeUserCommand>
+public class ChangeUserHandler(UserManager<ApplicationUser> userManager, IDatabaseContext databaseContext)
+    : IRequestHandler<ChangeUserCommand>
 {
     public async Task Handle(ChangeUserCommand request, CancellationToken cancellationToken)
     {

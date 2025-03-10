@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Application.Users.Query.GetUserById;
 
-public class GetUserByIdHandler(UserManager<ApplicationUser> userManager): IRequestHandler<GetUserByIdQuery, ApplicationUser>
+public class GetUserByIdHandler(UserManager<ApplicationUser> userManager)
+    : IRequestHandler<GetUserByIdQuery, ApplicationUser>
 {
     public async Task<ApplicationUser> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {

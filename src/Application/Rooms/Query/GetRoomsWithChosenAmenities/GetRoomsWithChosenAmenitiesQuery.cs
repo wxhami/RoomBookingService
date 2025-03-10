@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.Rooms.Query.GetRoomsWithChosenAmenities;
 
-public class GetRoomsWithChosenAmenitiesQuery:IRequest<List<Room>>, IPagedQuery
+public class GetRoomsWithChosenAmenitiesQuery : IRequest<List<Room>>, IPagedQuery
 {
     public Guid[] AmenitiesIds { get; set; } = [];
     public int? PageSize { get; set; }

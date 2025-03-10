@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.Reservations.Query.GetReservationsByRoomId;
 
-public class GetReservationsByRoomIdQuery:IRequest<List<Reservation>>, IPagedQuery
+public class GetReservationsByRoomIdQuery : IRequest<List<Reservation>>, IPagedQuery
 {
     public Guid RoomId { get; set; }
     public int? PageNumber { get; set; }

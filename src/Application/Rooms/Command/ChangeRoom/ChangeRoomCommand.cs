@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Application.Rooms.Command.ChangeRoom;
 
-public class ChangeRoomCommand: IRequest
+public class ChangeRoomCommand : IRequest
 {
     public Guid RoomId { get; set; }
     public string? NewName { get; set; }

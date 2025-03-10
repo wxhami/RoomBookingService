@@ -1,9 +1,8 @@
-﻿using System.Windows.Input;
-using MediatR;
+﻿using MediatR;
 
-namespace Application.Amenities.AddAmenity;
+namespace Application.Amenities.Command.AddAmenity;
 
-public class AddAmenityCommand: IRequest<Guid>
+public class AddAmenityCommand : IRequest<Guid>
 {
     public string Name { get; set; } = null!;
 }

@@ -3,7 +3,7 @@ using Application.Common.Interfaces;
 using Application.Common.Options;
 using Microsoft.Extensions.Options;
 
-namespace Client.Services;
+namespace Infrastructure.Services;
 
 public class MailSender(ISmtpClientFabric fabric, IOptions<EmailOptions> options) : IMailSender
 {

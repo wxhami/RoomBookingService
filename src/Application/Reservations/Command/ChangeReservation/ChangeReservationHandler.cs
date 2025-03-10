@@ -5,11 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Reservations.Command.ChangeReservation;
 
-public class ChangeReservationHandler(IDatabaseContext databaseContext):IRequestHandler<ChangeReservationCommand>
+public class ChangeReservationHandler(IDatabaseContext databaseContext) : IRequestHandler<ChangeReservationCommand>
 {
     public async Task Handle(ChangeReservationCommand request, CancellationToken cancellationToken)
     {
-        var reservation = await databaseContext.Reservations.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+        var reservation =
+            await databaseContext.Reservations.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
         if (reservation == default) throw new ObjectNotFoundException();
 
         if (request.NewDescription != null)
@@ -27,6 +28,6 @@ public class ChangeReservationHandler(IDatabaseContext databaseContext):IRequest
             reservation.StartReservation = (DateTime)request.NewStartReservationTime;
         }
 
-       await databaseContext.SaveChangesAsync(cancellationToken);
+        await databaseContext.SaveChangesAsync(cancellationToken);
     }
 }

@@ -1,13 +1,10 @@
 using Application;
 using Client.Endpoints.Extensions;
 using Client.ExceptionHandlers;
-using Hangfire;
 using Infrastructure;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,11 +42,12 @@ builder.Services.AddAntiforgery();
 var app = builder.Build();
 
 app.UseSwagger();
+app.UseSwagger();
+app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHangfire();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);

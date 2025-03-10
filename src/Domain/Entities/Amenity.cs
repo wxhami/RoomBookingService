@@ -1,7 +1,9 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Entities.Base;
 
-public class Amenity: IEntity
+namespace Domain.Entities;
+
+public class Amenity : IEntity
 {
     public Guid Id { get; set; }
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
 }

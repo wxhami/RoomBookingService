@@ -9,5 +9,4 @@ public interface INotificationService
     private void SendNotification(Guid reservationId)
     {
     }
-
 }

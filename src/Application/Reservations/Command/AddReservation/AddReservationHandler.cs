@@ -4,7 +4,8 @@ using MediatR;
 
 namespace Application.Reservations.Command.AddReservation;
 
-public class AddReservationHandler(IDatabaseContext databaseContext, INotificationService notificationService): IRequestHandler<AddReservationCommand, Guid>
+public class AddReservationHandler(IDatabaseContext databaseContext, INotificationService notificationService)
+    : IRequestHandler<AddReservationCommand, Guid>
 {
     public async Task<Guid> Handle(AddReservationCommand request, CancellationToken cancellationToken)
     {
@@ -19,8 +20,8 @@ public class AddReservationHandler(IDatabaseContext databaseContext, INotificati
 
         databaseContext.Reservations.Add(reservation);
         await databaseContext.SaveChangesAsync(cancellationToken);
-        
-       notificationService.ScheduleNotification(reservation.Id, reservation.StartReservation);
+
+        notificationService.ScheduleNotification(reservation.Id, reservation.StartReservation);
 
         return reservation.Id;
     }

@@ -1,10 +1,8 @@
-﻿
-using Domain.Entities;
-
-namespace Domain.Configuration;
-
+﻿using Domain.Entities.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace Infrastructure.Persistence.Configuration.Base;
 
 public class EntityConfigurationBase<T> : IEntityTypeConfiguration<T> where T : class, IEntity
 {

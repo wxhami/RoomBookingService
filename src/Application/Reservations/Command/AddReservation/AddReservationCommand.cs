@@ -2,7 +2,7 @@
 
 namespace Application.Reservations.Command.AddReservation;
 
-public class AddReservationCommand:IRequest<Guid>
+public class AddReservationCommand : IRequest<Guid>
 {
     public Guid RoomId { get; set; }
     public string OrganizerId { get; set; } = null!;

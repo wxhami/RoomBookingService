@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Rooms.Command.ChangeRoom;
 
-public class ChangeRoomHandler(IDatabaseContext databaseContext): IRequestHandler<ChangeRoomCommand>
+public class ChangeRoomHandler(IDatabaseContext databaseContext) : IRequestHandler<ChangeRoomCommand>
 {
     public async Task Handle(ChangeRoomCommand request, CancellationToken cancellationToken)
     {

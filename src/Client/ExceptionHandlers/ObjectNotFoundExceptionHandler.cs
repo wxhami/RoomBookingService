@@ -5,7 +5,8 @@ namespace Client.ExceptionHandlers;
 
 public class ObjectNotFoundExceptionHandler : IExceptionHandler
 {
-    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
+    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception,
+        CancellationToken cancellationToken)
     {
         if (exception is not ObjectNotFoundException objectNotFoundException) return false;
 
