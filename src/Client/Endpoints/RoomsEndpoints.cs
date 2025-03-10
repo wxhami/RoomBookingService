@@ -29,7 +29,7 @@ public static class RoomsEndpoints
         
         g.MapGet(
             "all-rooms-with-chosen-amenities",
-            async (Guid[] amenitiesIds, int? pageNumber, int? pageSize, [FromServices] ISender sender, CancellationToken cancellationToken)=>
+            async ([FromForm] Guid[] amenitiesIds, int? pageNumber, int? pageSize, [FromServices] ISender sender, CancellationToken cancellationToken)=>
             {
                 var result = await sender.Send(new GetRoomsWithChosenAmenitiesQuery(){AmenitiesIds = amenitiesIds, PageNumber = pageNumber, PageSize = pageSize}, cancellationToken);
 
@@ -39,13 +39,13 @@ public static class RoomsEndpoints
         
         g.MapPut(
                 "",
-                async (Guid[] amenities, int capacity, string name,  [FromServices] ISender sender, CancellationToken cancellationToken) =>
-                    await sender.Send(new ChangeRoomCommand(){NewAmenities = amenities, NewCapacity = capacity, NewName = name}, cancellationToken))
+                async ([FromForm]Guid[] amenities, int capacity, string name, Guid Id, [FromServices] ISender sender, CancellationToken cancellationToken) =>
+                    await sender.Send(new ChangeRoomCommand(){RoomId = Id, NewAmenities = amenities, NewCapacity = capacity, NewName = name}, cancellationToken))
             .WithSummary("Изменить комнату");
         
         g.MapPost(
             "",
-            async (Guid[] amenities, int capacity, string name, [FromServices] ISender sender, CancellationToken cancellationToken)=>
+            async ([FromForm] Guid[] amenities, int capacity, string name, [FromServices] ISender sender, CancellationToken cancellationToken)=>
             {
                 var result = await sender.Send(new AddRoomCommand(){Amenities = amenities, Name = name, Capacity = capacity}, cancellationToken);
 
