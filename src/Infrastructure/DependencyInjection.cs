@@ -2,16 +2,15 @@
 using Application.Common.Options;
 using Hangfire;
 using Hangfire.PostgreSql;
-using Hangfire.AspNetCore;
+using Infrastructure.Extensions;
 using Infrastructure.Persistence;
+using Infrastructure.Services;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Infrastructure.Extensions;
-using Infrastructure.Services;
-using Microsoft.Extensions.Configuration;
 using Npgsql;
 
 namespace Infrastructure;
@@ -32,7 +31,9 @@ public static class DependencyInjection
                 o => o.EnableSensitiveDataLogging().UseNpgsql(dataSource),
                 ServiceLifetime.Transient,
                 ServiceLifetime.Transient)
-            .AddTransient<IDatabaseContext>(provider => provider.GetRequiredService<DatabaseContext>());
+            .AddTransient<IDatabaseContext>(provider => provider.GetRequiredService<DatabaseContext>())
+            .AddTransient<DatabaseContextInitializer>();
+        ;
     }
 
     private static IServiceCollection AddSettings(this IServiceCollection services, IConfiguration configuration) =>
@@ -64,7 +65,7 @@ public static class DependencyInjection
         var connectionString = configuration.GetConnectionString("Database");
 
         services.AddHangfire(config => config
-            .UsePostgreSqlStorage(connectionString));
+            .UsePostgreSqlStorage(o => o.UseNpgsqlConnection(connectionString)));
 
         services.AddHangfireServer();
 
