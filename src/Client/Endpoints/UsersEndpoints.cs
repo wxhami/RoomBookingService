@@ -1,7 +1,7 @@
-﻿using Application.Users.Command.ChangeUser;
-using Application.Users.Command.DeleteUser;
-using Application.Users.Query.GetAllUsers;
-using Application.Users.Query.GetUserById;
+﻿using Application.Users.Commands.Change;
+using Application.Users.Commands.Delete;
+using Application.Users.Queries.GetAll;
+using Application.Users.Queries.GetById;
 using Client.Endpoints.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

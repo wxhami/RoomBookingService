@@ -1,8 +1,8 @@
-﻿using Application.Rooms.Command.AddRoom;
-using Application.Rooms.Command.ChangeRoom;
-using Application.Rooms.Command.DeleteRoom;
-using Application.Rooms.Query.GetRoomById;
-using Application.Rooms.Query.GetRoomsWithChosenAmenities;
+﻿using Application.Rooms.Commands.Add;
+using Application.Rooms.Commands.Change;
+using Application.Rooms.Commands.Delete;
+using Application.Rooms.Queries.GetById;
+using Application.Rooms.Queries.GetWithChosenAmenities;
 using Client.Endpoints.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

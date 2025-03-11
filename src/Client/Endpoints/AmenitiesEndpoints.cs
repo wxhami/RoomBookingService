@@ -1,9 +1,9 @@
-﻿using Application.Amenities.Command.DeleteAmenity;
-using Application.Amenities.Query.GetAmenityById;
+﻿using Application.Amenities.Commands.Delete;
+using Application.Amenities.Queries.GetById;
 using Client.Endpoints.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using AddAmenityCommand = Application.Amenities.Command.AddAmenity.AddAmenityCommand;
+using AddAmenityCommand = Application.Amenities.Commands.Add.AddAmenityCommand;
 
 namespace Client.Endpoints;
 

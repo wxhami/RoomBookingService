@@ -1,8 +1,8 @@
-﻿using Application.Reservations.Command.AddReservation;
-using Application.Reservations.Command.ChangeReservation;
-using Application.Reservations.Command.DeleteReservation;
-using Application.Reservations.Query.GetReservationById;
-using Application.Reservations.Query.GetReservationsByRoomId;
+﻿using Application.Reservations.Commands.Add;
+using Application.Reservations.Commands.Change;
+using Application.Reservations.Commands.Delete;
+using Application.Reservations.Queries.GetById;
+using Application.Reservations.Queries.GetByRoomId;
 using Client.Endpoints.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
