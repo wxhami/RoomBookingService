@@ -5,7 +5,9 @@ using Hangfire.PostgreSql;
 using Infrastructure.Extensions;
 using Infrastructure.Persistence;
 using Infrastructure.Services;
+using Infrastructure.Validation;
 using MassTransit;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -80,6 +82,7 @@ public static class DependencyInjection
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
         return services.AddTransient<INotificationService, NotificationService>()
-            .AddTransient<ISmtpClientFabric, SmtpClientFabric>().AddTransient<IMailSender, MailSender>();
+            .AddTransient<ISmtpClientFabric, SmtpClientFabric>().AddTransient<IMailSender, MailSender>()
+            .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
     }
 }
