@@ -1,15 +1,16 @@
 ﻿using Application.Common.Constants;
 using Application.Common.Interfaces;
+using Application.Common.Paging;
 using Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Rooms.Queries.GetWithChosenAmenities;
 
 public class GetRoomsWithChosenAmenitiesHandler(IDatabaseContext databaseContext)
-    : IRequestHandler<GetRoomsWithChosenAmenitiesQuery, List<Room>>
+    : IRequestHandler<GetRoomsWithChosenAmenitiesQuery, PagedResult<Room>>
 {
-    public async Task<List<Room>> Handle(GetRoomsWithChosenAmenitiesQuery request, CancellationToken cancellationToken)
+    public async Task<PagedResult<Room>> Handle(GetRoomsWithChosenAmenitiesQuery request,
+        CancellationToken cancellationToken)
     {
         var pageNumber = request.PageNumber ?? RequestConstants.PageNumber;
         var pageSize = request.PageSize ?? RequestConstants.PageSize;
@@ -18,7 +19,7 @@ public class GetRoomsWithChosenAmenitiesHandler(IDatabaseContext databaseContext
             .Where(x => x.Amenities.Any(a => request.AmenitiesIds.Contains(a)))
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
-            .ToListAsync(cancellationToken);
+            .ToPagedResultAsync(request, cancellationToken);
 
         return rooms;
     }

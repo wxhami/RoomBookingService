@@ -1,15 +1,16 @@
 ﻿using Application.Common.Constants;
+using Application.Common.Paging;
 using Infrastructure.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Users.Queries.GetAll;
 
 public class GetAllUsersHandler(UserManager<ApplicationUser> userManager)
-    : IRequestHandler<GetAllUsersQuery, List<ApplicationUser>>
+    : IRequestHandler<GetAllUsersQuery, PagedResult<ApplicationUser>>
 {
-    public async Task<List<ApplicationUser>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
+    public async Task<PagedResult<ApplicationUser>> Handle(GetAllUsersQuery request,
+        CancellationToken cancellationToken)
     {
         var pageNumber = request.PageNumber ?? RequestConstants.PageNumber;
         var pageSize = request.PageSize ?? RequestConstants.PageSize;
@@ -17,7 +18,7 @@ public class GetAllUsersHandler(UserManager<ApplicationUser> userManager)
         var users = await userManager.Users
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
-            .ToListAsync(cancellationToken);
+            .ToPagedResultAsync(request, cancellationToken);
 
         return users;
     }
