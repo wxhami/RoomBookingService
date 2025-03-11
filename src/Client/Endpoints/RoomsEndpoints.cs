@@ -7,7 +7,6 @@ using Client.Endpoints.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace Client.Endpoints;
 
 public static class RoomsEndpoints
@@ -18,10 +17,11 @@ public static class RoomsEndpoints
     private static void MapEndpoints(RouteGroupBuilder g)
     {
         g.MapGet(
-            "",
-            async (Guid id, [FromServices] ISender sender, CancellationToken cancellationToken) =>
+            "{Id:guid}",
+            async ([AsParameters] GetRoomByIdQuery request, [FromServices] ISender sender,
+                CancellationToken cancellationToken) =>
             {
-                var result = await sender.Send(new GetRoomByIdQuery() { Id = id }, cancellationToken);
+                var result = await sender.Send(request, cancellationToken);
 
                 return Results.Ok(result);
             }
@@ -44,7 +44,7 @@ public static class RoomsEndpoints
 
         g.MapPut(
                 "",
-                async ([FromForm] Guid[] amenities, int capacity, string name, Guid id, [FromServices] ISender sender,
+                async ([FromForm] Guid[] amenities, int capacity, string name, Guid id, ISender sender,
                         CancellationToken cancellationToken) =>
                     await sender.Send(
                         new ChangeRoomCommand()
@@ -54,7 +54,7 @@ public static class RoomsEndpoints
 
         g.MapPost(
             "",
-            async ([FromForm] Guid[] amenities, int capacity, string name, [FromServices] ISender sender,
+            async ([FromForm] Guid[] amenities, int capacity, string name, ISender sender,
                 CancellationToken cancellationToken) =>
             {
                 var result =
@@ -66,10 +66,10 @@ public static class RoomsEndpoints
         ).WithSummary("Создать комнату");
 
         g.MapDelete(
-                "",
-                async (Guid roomId, [FromServices] ISender sender, CancellationToken cancellationToken) =>
+                "{Id:guid}",
+                async ([AsParameters] DeleteRoomCommand request, ISender sender, CancellationToken cancellationToken) =>
                 {
-                    await sender.Send(new DeleteRoomCommand() { RoomId = roomId }, cancellationToken);
+                    await sender.Send(request, cancellationToken);
                 })
             .WithSummary("Удалить комнату");
     }

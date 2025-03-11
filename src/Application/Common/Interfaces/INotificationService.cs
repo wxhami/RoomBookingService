@@ -2,11 +2,5 @@
 
 public interface INotificationService
 {
-    public void ScheduleNotification(Guid reservationId, DateTime startTime)
-    {
-    }
-
-    private void SendNotification(Guid reservationId)
-    {
-    }
+    public void ScheduleNotification(Guid reservationId, DateTime startTime);
 }

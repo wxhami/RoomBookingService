@@ -5,7 +5,6 @@ using Application.Reservations.Queries.GetById;
 using Application.Reservations.Queries.GetByRoomId;
 using Client.Endpoints.Extensions;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Endpoints;
 
@@ -17,10 +16,11 @@ public static class ReservationEndpoints
     private static void MapEndpoints(RouteGroupBuilder g)
     {
         g.MapGet(
-            "",
-            async (Guid id, ISender sender, CancellationToken cancellationToken) =>
+            "{Id:guid}",
+            async ([AsParameters] GetReservationByIdQuery request, ISender sender,
+                CancellationToken cancellationToken) =>
             {
-                var result = await sender.Send(new GetReservationByIdQuery() { Id = id }, cancellationToken);
+                var result = await sender.Send(request, cancellationToken);
 
                 return Results.Ok(result);
             }
@@ -28,7 +28,7 @@ public static class ReservationEndpoints
 
         g.MapGet(
             "all-reservations-by-room-id",
-            async (Guid id, int? pageSize, int? pageNumber, [FromServices] ISender sender,
+            async (Guid id, int? pageSize, int? pageNumber, ISender sender,
                 CancellationToken cancellationToken) =>
             {
                 var result =
@@ -42,22 +42,24 @@ public static class ReservationEndpoints
 
         g.MapPut(
                 "",
-                async (string? description, DateTime? startTime, DateTime? endTime, [FromServices] ISender sender,
+                async (Guid id, string? description, DateTime? startTime, DateTime? endTime, ISender sender,
                     CancellationToken cancellationToken) =>
                 {
                     await sender.Send(
                         new ChangeReservationCommand()
                         {
-                            NewDescription = description, NewEndReservationTime = endTime,
+                            Id = id, NewDescription = description, NewEndReservationTime = endTime,
                             NewStartReservationTime = startTime
                         }, cancellationToken);
+
+                    return Results.Ok();
                 })
             .WithSummary("Изменить бронирование");
 
         g.MapPost(
             "",
             async (Guid roomId, string? description, DateTime startTime, DateTime endTime, string userId,
-                [FromServices] ISender sender, CancellationToken cancellationToken) =>
+                ISender sender, CancellationToken cancellationToken) =>
             {
                 var result =
                     await sender.Send(
@@ -72,9 +74,14 @@ public static class ReservationEndpoints
         ).WithSummary("Создать бронирование");
 
         g.MapDelete(
-                "",
-                async (Guid id, [FromServices] ISender sender, CancellationToken cancellationToken) =>
-                await sender.Send(new DeleteReservationCommand() { Id = id }, cancellationToken))
+                "{Id:guid}",
+                async ([AsParameters] DeleteReservationCommand request, ISender sender,
+                    CancellationToken cancellationToken) =>
+                {
+                    await sender.Send(request, cancellationToken);
+
+                    return Results.Ok();
+                })
             .WithSummary("Удалить бронирование");
     }
 }

@@ -4,7 +4,6 @@ using Client.ExceptionHandlers;
 using Infrastructure;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,16 +68,7 @@ app.UseAntiforgery();
 
 app.UseHttpLogging();
 
-app.MapGroup("api/v1/identity/").MapIdentityApi<ApplicationUser>();
 app.MapEndpoints();
 
-await MigrateDatabaseAsync(app);
 
 app.Run();
-
-static async Task MigrateDatabaseAsync(IHost app)
-{
-    using var scope = app.Services.CreateScope();
-    var context = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-    await context.Database.MigrateAsync();
-}

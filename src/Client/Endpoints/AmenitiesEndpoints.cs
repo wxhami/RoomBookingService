@@ -2,7 +2,6 @@
 using Application.Amenities.Queries.GetById;
 using Client.Endpoints.Extensions;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using AddAmenityCommand = Application.Amenities.Commands.Add.AddAmenityCommand;
 
 namespace Client.Endpoints;
@@ -15,10 +14,10 @@ public static class AmenitiesEndpoints
     private static void MapEndpoints(RouteGroupBuilder g)
     {
         g.MapGet(
-            "",
-            async (Guid id, [FromServices] ISender sender, CancellationToken cancellationToken) =>
+            "{Id:guid}",
+            async ([AsParameters] GetAmenityByIdQuery request, ISender sender, CancellationToken cancellationToken) =>
             {
-                var result = await sender.Send(new GetAmenityByIdQuery() { Id = id }, cancellationToken);
+                var result = await sender.Send(request, cancellationToken);
 
                 return Results.Ok(result);
             }
@@ -26,14 +25,23 @@ public static class AmenitiesEndpoints
 
         g.MapPost(
                 "",
-                async (string name, [FromServices] ISender sender, CancellationToken cancellationToken) =>
-                await sender.Send(new AddAmenityCommand() { Name = name }, cancellationToken))
+                async (string name, ISender sender, CancellationToken cancellationToken) =>
+                {
+                    var result = await sender.Send(new AddAmenityCommand() { Name = name }, cancellationToken);
+
+                    return Results.Ok(result);
+                })
             .WithSummary("Создать опцию комнаты");
 
         g.MapDelete(
-                "",
-                async (Guid id, [FromServices] ISender sender, CancellationToken cancellationToken) =>
-                await sender.Send(new DeleteAmenityCommand() { Id = id }, cancellationToken))
+                "{Id:guid}",
+                async ([AsParameters] DeleteAmenityCommand request, ISender sender,
+                    CancellationToken cancellationToken) =>
+                {
+                    await sender.Send(request, cancellationToken);
+
+                    return Results.Ok();
+                })
             .WithSummary("Удалить опцию комнаты");
     }
 }
