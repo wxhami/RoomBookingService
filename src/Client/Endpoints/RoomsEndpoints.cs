@@ -5,7 +5,6 @@ using Application.Rooms.Queries.GetById;
 using Application.Rooms.Queries.GetWithChosenAmenities;
 using Client.Endpoints.Extensions;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Endpoints;
 
@@ -18,7 +17,7 @@ public static class RoomsEndpoints
     {
         g.MapGet(
             "{Id:guid}",
-            async ([AsParameters] GetRoomByIdQuery request, [FromServices] ISender sender,
+            async ([AsParameters] GetRoomByIdQuery request, ISender sender,
                 CancellationToken cancellationToken) =>
             {
                 var result = await sender.Send(request, cancellationToken);
@@ -29,7 +28,7 @@ public static class RoomsEndpoints
 
         g.MapGet(
             "all-rooms-with-chosen-amenities",
-            async ([FromForm] Guid[] amenitiesIds, int? pageNumber, int? pageSize, [FromServices] ISender sender,
+            async (Guid[] amenitiesIds, int? pageNumber, int? pageSize, ISender sender,
                 CancellationToken cancellationToken) =>
             {
                 var result =
@@ -44,7 +43,7 @@ public static class RoomsEndpoints
 
         g.MapPut(
                 "",
-                async ([FromForm] Guid[] amenities, int capacity, string name, Guid id, ISender sender,
+                async (Guid[] amenities, int capacity, string name, Guid id, ISender sender,
                         CancellationToken cancellationToken) =>
                     await sender.Send(
                         new ChangeRoomCommand()
@@ -54,7 +53,7 @@ public static class RoomsEndpoints
 
         g.MapPost(
             "",
-            async ([FromForm] Guid[] amenities, int capacity, string name, ISender sender,
+            async (Guid[] amenities, int capacity, string name, ISender sender,
                 CancellationToken cancellationToken) =>
             {
                 var result =
