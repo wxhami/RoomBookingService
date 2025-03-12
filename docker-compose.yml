@@ -1,0 +1,57 @@
+services:
+  db:
+    image: postgres
+    container_name: db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 5s
+      timeout: 15s
+      retries: 1
+  
+  server:
+    build:
+      context: .
+      dockerfile: src/Client/Dockerfile
+    container_name: server
+    environment:
+      RabbitMqOptions__Username: ${RABBITMQ_USERNAME}
+      RabbitMqOptions__Password: ${RABBITMQ_PASSWORD}
+      RabbitMqOptions__Host: ${RABBITMQ_HOST}
+      RabbitMqOptions__Port: ${RABBITMQ_PORT}
+      RabbitMqOptions__VirtualHost: ${RABBITMQ_VIRTUALHOST}
+      ConnectionStrings__Database: ${DATABASE_URL}
+      EmailOptions__MailSender: ${MAIL_SENDER}
+      EmailOptions__Password: ${MAIL_PASSWORD}
+      EmailOptions__SmtpHost: ${SMTP_HOST}
+      EmailOptions__SmtpPort: ${SMTP_PORT}
+    ports:
+      - "${PORT}:8080"
+    depends_on:
+      db:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+  
+
+volumes:
+  rabbitmq-data:
+  pgdata:
+  
