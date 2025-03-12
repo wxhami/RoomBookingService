@@ -40,8 +40,8 @@ builder.Services.AddAntiforgery();
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwagger();
+await app.InitialiseDatabaseAsync();
+
 app.UseSwagger();
 app.UseSwaggerUI();
 

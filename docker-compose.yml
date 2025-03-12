@@ -10,8 +10,6 @@ services:
       - "${DB_PORT}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-    networks:
-      - app-network
   
   rabbitmq:
     image: rabbitmq:management
@@ -39,6 +37,7 @@ services:
       RabbitMqOptions__Host: ${RABBITMQ_HOST}
       RabbitMqOptions__Port: ${RABBITMQ_PORT}
       RabbitMqOptions__VirtualHost: ${RABBITMQ_VIRTUALHOST}
+      ConnectionStrings__Database: ${DATABASE_URL}
       EmailOptions__MailSender: ${MAIL_SENDER}
       EmailOptions__Password: ${MAIL_PASSWORD}
       EmailOptions__SmtpHost: ${SMTP_HOST}
@@ -46,6 +45,8 @@ services:
     ports:
       - "${PORT}:8080"
     depends_on:
+      db:
+        condition: service_started
       rabbitmq:
         condition: service_healthy
   
