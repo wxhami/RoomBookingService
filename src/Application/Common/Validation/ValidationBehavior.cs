@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 
-namespace Infrastructure.Validation;
+namespace Application.Common.Validation;
 
 internal record ValidationBehavior<TRequest, TResponse>(IValidator<TRequest>? Validator = default)
     : IPipelineBehavior<TRequest, TResponse>
